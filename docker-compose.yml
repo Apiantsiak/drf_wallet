@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  pg_drf_wallet:
+    image: postgres:latest
+    container_name: pg_drf
+    hostname: pg_drf
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "8432:5432"
+    expose:
+      - 8432
+    environment:
+      POSTGRES_USER: 'avp'
+      POSTGRES_PASSWORD: 'avp'
+      POSTGRES_DB: 'pg_drf_DB'
+volumes:
+  postgres_data:
