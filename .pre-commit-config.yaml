@@ -19,6 +19,11 @@ repos:
     rev: 3.9.2
     hooks:
       - id: flake8
+        args:
+        - "--max-line-length=120"
+        - "--max-complexity=10"
+        - "--ignore=E203,E266,W503,F403,F401,E402,F841"
+        - "--exclude=.git,__pycache__,*initial.py"
   - repo: local
     hooks:
       - id: django-test
