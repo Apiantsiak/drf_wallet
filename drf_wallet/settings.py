@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # local
     "accounts.apps.AccountsConfig",
+    "wallet.apps.WalletConfig",
     # 3rd party
     "rest_framework",
     "rest_framework.authtoken",
