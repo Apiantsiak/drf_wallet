@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -42,9 +43,7 @@ class CreateTransactionView(generics.ListCreateAPIView):
     def get_queryset(self):
         """Return object for current authenticated user only"""
         wallet = Wallets.objects.filter(user=self.request.user)
-        return self.queryset.filter(sender__in=wallet).union(
-            self.queryset.filter(receiver__in=wallet)
-        )
+        return self.queryset.filter(Q(sender__in=wallet) | Q(receiver__in=wallet))
 
 
 class TransactionListView(generics.ListAPIView):
@@ -58,9 +57,7 @@ class TransactionListView(generics.ListAPIView):
         wallet = Wallets.objects.filter(
             wallet_name=self.kwargs["wallet_name"], user=self.request.user
         )
-        return self.queryset.filter(sender__in=wallet).union(
-            self.queryset.filter(receiver__in=wallet)
-        )
+        return self.queryset.filter(Q(sender__in=wallet) | Q(receiver__in=wallet))
 
 
 class TransactionDetailView(generics.RetrieveAPIView):

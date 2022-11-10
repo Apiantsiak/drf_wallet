@@ -5,7 +5,7 @@ from django.db import transaction
 
 from wallet.models import Wallets
 
-from .models import Transaction
+from .models import Status, Transaction
 
 
 def make_transaction(sender, receiver, transaction_amount):
@@ -15,11 +15,11 @@ def make_transaction(sender, receiver, transaction_amount):
     if sender.user != receiver.user:
         tax = transaction_amount * Decimal(0.10)
         transaction_amount += tax
-    if sender.balance < transaction_amount:
-        raise ValidationError("Not enough money")
-    if sender.currency != receiver.currency:
-        raise ValidationError("Wallet currency don't match")
     try:
+        if sender.balance < transaction_amount:
+            raise ValueError("Not enough money")
+        if sender.currency != receiver.currency:
+            raise ValueError("Wallet currency don't match")
         with transaction.atomic():
             from_balance = sender.balance - transaction_amount
             sender.balance = from_balance
@@ -34,15 +34,16 @@ def make_transaction(sender, receiver, transaction_amount):
                 receiver=receiver,
                 transaction_amount=transaction_amount,
                 commission=tax,
-                status="PAID",
+                status=Status.PAID,
             )
-    except Exception:
+    except ValueError as err:
         invalid_transaction = Transaction.objects.create(
             sender=sender,
             receiver=receiver,
             transaction_amount=transaction_amount,
             commission=tax,
         )
+        raise ValidationError(str(err))
 
 
 def filter_user_wallet(user, sender):
