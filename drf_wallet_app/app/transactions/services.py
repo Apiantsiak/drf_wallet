@@ -2,7 +2,6 @@ from decimal import Decimal, getcontext
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
-
 from wallet.models import Wallets
 
 from .models import Status, Transaction

@@ -1,19 +1,22 @@
 version: "3.7"
-
 services:
-  pg_drf_wallet:
+  web:
+    build: ./drf_wallet_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./drf_wallet_app/app:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+    env_file: .env
+    environment:
+      - DEBUG=TRUE
+  db:
     image: postgres:latest
-    container_name: pg_drf
-    hostname: pg_drf
+    environment:
+      - POSTGRES_PASSWORD=password
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - "8432:5432"
-    expose:
-      - 8432
-    environment:
-      POSTGRES_USER: 'avp'
-      POSTGRES_PASSWORD: 'avp'
-      POSTGRES_DB: 'pg_drf_DB'
 volumes:
   postgres_data:
