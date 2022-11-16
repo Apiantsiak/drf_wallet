@@ -29,7 +29,7 @@ class CreateTransactionView(generics.ListCreateAPIView):
         try:
             sender = filter_user_wallet(self.request.user, request.data["sender"])
             receiver = check_receiver_wallet_exists(request.data["receiver"])
-            transactions_amount = request.data["transaction_amount"]
+            transactions_amount = request.data.get("transaction_amount", 0)
             make_transaction(sender, receiver, transactions_amount)
         except ValidationError as err:
             content = {"error": err.message}

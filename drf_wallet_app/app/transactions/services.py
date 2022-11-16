@@ -1,5 +1,7 @@
 from decimal import Decimal, getcontext
+from typing import NoReturn, Union
 
+from accounts.models import CustomUser
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from wallet.models import Wallets
@@ -7,7 +9,9 @@ from wallet.models import Wallets
 from .models import Status, Transaction
 
 
-def make_transaction(sender, receiver, transaction_amount):
+def make_transaction(
+    sender: Wallets, receiver: Wallets, transaction_amount: Union[str, int]
+) -> NoReturn:
     getcontext().prec = 2
     transaction_amount = Decimal(transaction_amount)
     tax = 0
@@ -45,7 +49,7 @@ def make_transaction(sender, receiver, transaction_amount):
         raise ValidationError(str(err))
 
 
-def filter_user_wallet(user, sender):
+def filter_user_wallet(user: CustomUser, sender: Wallets) -> Wallets:
     try:
         wallet = Wallets.objects.filter(user=user).get(wallet_name=sender)
     except Wallets.DoesNotExist:
@@ -54,7 +58,7 @@ def filter_user_wallet(user, sender):
     return wallet
 
 
-def check_receiver_wallet_exists(receiver):
+def check_receiver_wallet_exists(receiver: Wallets) -> Wallets:
     try:
         wallet = Wallets.objects.get(wallet_name=receiver)
     except Wallets.DoesNotExist:
