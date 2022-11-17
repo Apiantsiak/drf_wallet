@@ -22,13 +22,13 @@ def make_transaction(
         if sender.balance < transaction_amount:
             raise ValueError("Not enough money")
         if sender.currency != receiver.currency:
-            raise ValueError("Wallet currency don't match")
+            raise ValueError("Wallet's currencies don't match")
         with transaction.atomic():
             from_balance = sender.balance - transaction_amount
             sender.balance = from_balance
             sender.save()
 
-            to_balance = receiver.balance + transaction_amount
+            to_balance = receiver.balance + (transaction_amount - tax)
             receiver.balance = to_balance
             receiver.save()
 
