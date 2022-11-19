@@ -1,0 +1,1332 @@
+{
+	"info": {
+		"_postman_id": "5e963011-6e41-4a85-8239-955a91900feb",
+		"name": "drf_wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user_1",
+			"item": [
+				{
+					"name": "Create user_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{first_user}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{user_pass}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{first_user}}@test.com",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/users/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user_1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const token = pm.response.json()['auth_token'];",
+									"pm.collectionVariables.set(\"first_user_auth_token\", token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{first_user}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{user_pass}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/token/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"token",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail user_1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/users/me/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create wallets for user_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('first_user_last_create_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get wallet by wallet_name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/{{first_user_last_create_wallet}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"{{first_user_last_create_wallet}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  user_1's wallet",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/{{first_user_last_create_wallet}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"{{first_user_last_create_wallet}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user_2",
+			"item": [
+				{
+					"name": "Create user_2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{second_user}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{user_pass}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{second_user}}@test.com",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/users/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user_2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const token = pm.response.json()['auth_token'];",
+									"pm.collectionVariables.set(\"second_user_auth_token\", token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{second_user}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{user_pass}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/token/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"token",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail user_2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{second_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/users/me/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create wallets for user_2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('second_user_last_create_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{second_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get wallet by wallet_name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{second_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/{{second_user_last_create_wallet}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"{{second_user_last_create_wallet}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  user_2's wallet",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{second_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/{{second_user_last_create_wallet}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"{{second_user_last_create_wallet}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transactions between user's wallets",
+			"item": [
+				{
+					"name": "Create first wallet for transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('first_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second wallet for transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('second_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make transaction between user's wallets",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "sender",
+									"value": "{{first_wallet}}",
+									"type": "default"
+								},
+								{
+									"key": "receiver",
+									"value": "{{second_wallet}}",
+									"type": "default"
+								},
+								{
+									"key": "transaction_amount",
+									"value": "2",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/transactions/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"transactions",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transactions between different users",
+			"item": [
+				{
+					"name": "Create first wallet for transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('first_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second wallet for transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const wallet = pm.response.json()['wallet_name'];",
+									"pm.collectionVariables.set('second_wallet', wallet);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{second_user_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "currency",
+									"value": "{{rub}}",
+									"type": "default"
+								},
+								{
+									"key": "currency",
+									"value": "{{eur}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "{{usd}}",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "card_type",
+									"value": "{{visa}}",
+									"type": "default"
+								},
+								{
+									"key": "card_type",
+									"value": "{{mastercard}}",
+									"type": "default",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make transaction between user's wallets Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "sender",
+									"value": "{{first_wallet}}",
+									"type": "default"
+								},
+								{
+									"key": "receiver",
+									"value": "{{second_wallet}}",
+									"type": "default"
+								},
+								{
+									"key": "transaction_amount",
+									"value": "2",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/transactions/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"transactions",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transactions",
+			"item": [
+				{
+					"name": "Get user's transactions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/transactions/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"transactions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user's transactions by wallet name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const id = pm.response.json()[0]['id'];",
+									"pm.collectionVariables.set('transaction_id', id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/transactions/{{first_wallet}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"transactions",
+								"{{first_wallet}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user's transactions by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{first_user_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/wallets/transactions/{{transaction_id}}/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"wallets",
+								"transactions",
+								"{{transaction_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "first_user",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "second_user",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user_pass",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "rub",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "usd",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "eur",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "mastercard",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "visa",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "first_user_auth_token",
+			"value": ""
+		},
+		{
+			"key": "first_user_last_create_wallet",
+			"value": ""
+		},
+		{
+			"key": "second_user_auth_token",
+			"value": ""
+		},
+		{
+			"key": "second_user_last_create_wallet",
+			"value": ""
+		},
+		{
+			"key": "first_wallet",
+			"value": ""
+		},
+		{
+			"key": "second_wallet",
+			"value": ""
+		},
+		{
+			"key": "transaction_id",
+			"value": ""
+		}
+	]
+}
